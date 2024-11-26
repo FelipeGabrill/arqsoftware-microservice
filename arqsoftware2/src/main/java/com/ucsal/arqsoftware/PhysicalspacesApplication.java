@@ -6,10 +6,10 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy
-public class ArqsoftwareApplication {
+public class PhysicalspacesApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ArqsoftwareApplication.class, args);
+		SpringApplication.run(PhysicalspacesApplication.class, args);
 	}
 
 }

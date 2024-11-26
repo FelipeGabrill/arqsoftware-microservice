@@ -1,41 +1,46 @@
 package com.ucsal.arqsoftware.proxy;
 
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.ucsal.arqsoftware.response.PhysicalSpace;
 import com.ucsal.arqsoftware.response.PhysicalSpaceType;
 
+//http://localhost:8100/physicalspaces-service
+@FeignClient(name = "physicalspaces-service", url = "http://localhost:8100")
 public interface PhysicalSpaceProxy {
 
-	@GetMapping(value = "http://localhost:8100/physicalspaces")
+	@GetMapping(value = "/physicalspaces-service")
 	public Page<PhysicalSpace> getPhysicalSpace(Pageable pageable);
 	
-	@GetMapping(value = "http://localhost:8100/physicalspaces/{id}")
-	public PhysicalSpace getPhysicalSpaceById(Long id);
+	@GetMapping(value = "/physicalspaces-service/{id}")
+	public PhysicalSpace getPhysicalSpaceById(@PathVariable Long id);
 	
-	@PostMapping(value = "http://localhost:8100/physicalspaces")
-	public PhysicalSpace postPhysicalSpace(PhysicalSpace physicalSpace);
+	@PostMapping(value = "physicalspaces-service")
+	public PhysicalSpace postPhysicalSpace(@RequestBody PhysicalSpace physicalSpace);
 	
-	@PutMapping(value = "http://localhost:8100/physicalspaces/{id}")
-	public PhysicalSpace putPhysicalSpace(Long id, PhysicalSpace physicalSpace);
+	@PutMapping(value = "/physicalspaces-service/{id}")
+	public PhysicalSpace putPhysicalSpace(@PathVariable Long id, @RequestBody PhysicalSpace physicalSpace);
 	
-	@DeleteMapping(value = "http://localhost:8100/physicalspaces/{id}")
-	public Void deletePhysicalSpace(Long id);
+	@DeleteMapping(value = "/physicalspaces-service/{id}")
+	public Void deletePhysicalSpace(@PathVariable Long id);
 	
-	@GetMapping(value = "http://localhost:8100/physicalspaces/type/{type}")
-	public Page<PhysicalSpace> getByType(PhysicalSpaceType type, Pageable pageable);
+	@GetMapping(value = "/physicalspaces-service/type/{type}")
+	public Page<PhysicalSpace> getByType(@PathVariable PhysicalSpaceType type, Pageable pageable);
 	
-	@GetMapping(value = "http://localhost:8100/physicalspaces/capacity/{capacity}")
-	public Page<PhysicalSpace> getByCapacity(Integer capacity, Pageable pageable);
+	@GetMapping(value = "/physicalspaces-service/capacity/{capacity}")
+	public Page<PhysicalSpace> getByCapacity(@PathVariable Integer capacity, Pageable pageable);
 	
-	@GetMapping(value = "http://localhost:8100/physicalspaces/name/{name}")
-	public Page<PhysicalSpace> getByName(String name, Pageable pageable);
+	@GetMapping(value = "/physicalspaces-service/name/{name}")
+	public Page<PhysicalSpace> getByName(@PathVariable String name, Pageable pageable);
 	
-	@GetMapping(value = "http://localhost:8100/physicalspaces/availability/{availability}")
-	public Page<PhysicalSpace> getByAvailability(Boolean availability, Pageable pageable);
+	@GetMapping(value = "/physicalspaces-service/availability/{availability}")
+	public Page<PhysicalSpace> getByAvailability(@PathVariable Boolean availability, Pageable pageable);
 }

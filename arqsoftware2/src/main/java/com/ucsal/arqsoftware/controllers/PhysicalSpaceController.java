@@ -23,7 +23,7 @@ import com.ucsal.arqsoftware.servicies.PhysicalSpaceService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/physicalspaces")
+@RequestMapping(value = "/physicalspaces-service")
 public class PhysicalSpaceController {
 
 	@Autowired
