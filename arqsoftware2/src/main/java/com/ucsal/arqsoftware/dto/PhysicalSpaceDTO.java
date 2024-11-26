@@ -34,6 +34,8 @@ public class PhysicalSpaceDTO {
 	@Size(max = 255, message = "Recursos não podem ter mais de 255 caracteres")
 	private String resources;
 	
+	private String environment;
+	
 	@Setter
 	private Boolean availability;
 		

@@ -1,6 +1,7 @@
 package com.ucsal.arqsoftware.servicies;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,9 @@ public class PhysicalSpaceService {
 
 	@Autowired
 	private PhysicalSpaceRepository repository;
+	
+	@Autowired
+	private Environment environment;
 	
 	@Transactional(readOnly = true)
 	public PhysicalSpaceDTO findById(Long id) {

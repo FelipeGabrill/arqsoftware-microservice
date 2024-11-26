@@ -26,7 +26,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping(value = "/physicalspaces")
 public class PhysicalSpaceController {
-
+	
 	@Autowired
 	private PhysicalSpaceProxy proxy;
 	

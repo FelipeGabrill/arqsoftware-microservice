@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.ucsal.arqsoftware.response.PhysicalSpace;
 import com.ucsal.arqsoftware.response.PhysicalSpaceType;
 
-//http://localhost:8100/physicalspaces-service
-@FeignClient(name = "physicalspaces-service", url = "http://localhost:8100")
+@FeignClient(name = "physicalspaces-service")
 public interface PhysicalSpaceProxy {
 
 	@GetMapping(value = "/physicalspaces-service")

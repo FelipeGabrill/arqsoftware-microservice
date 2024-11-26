@@ -1,5 +1,6 @@
 package com.ucsal.arqsoftware.response;
 
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
