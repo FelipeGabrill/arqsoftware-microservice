@@ -60,10 +60,6 @@ public class User implements UserDetails {
 	private Set<Role> roles = new HashSet<>();
 	
 	@Getter
-	@OneToMany(mappedBy = "user")
-	private List<ApprovalHistory> approvalHistories = new ArrayList<>();
-	
-	@Getter
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Request> requests = new ArrayList<>();
 

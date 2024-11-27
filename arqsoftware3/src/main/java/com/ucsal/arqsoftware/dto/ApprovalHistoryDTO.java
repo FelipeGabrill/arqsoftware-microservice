@@ -39,7 +39,7 @@ public class ApprovalHistoryDTO {
         dateTime = entity.getDateTime();
         decision = entity.isDecision();
         observation = entity.getObservation();
-        userId = entity.getUser().getId();
-        requestId = entity.getRequest().getId();
+        userId = entity.getUserId();
+        requestId = entity.getRequestId();
     }
 }

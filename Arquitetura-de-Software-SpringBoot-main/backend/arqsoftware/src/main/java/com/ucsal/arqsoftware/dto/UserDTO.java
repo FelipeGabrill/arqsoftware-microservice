@@ -30,8 +30,6 @@ public class UserDTO {
 	
 	private List<RequestDTO> requests = new ArrayList<>();
 	
-	private List<ApprovalHistoryDTO> approvalHistories = new ArrayList<>();
-
 	
 	public UserDTO(User entity) {
 		id = entity.getId();
@@ -40,9 +38,6 @@ public class UserDTO {
 		entity.getRoles().forEach(role -> this.roles.add(new RoleDTO(role)));
 		requests = entity.getRequests().stream()
 	            .map(RequestDTO::new) 
-	            .collect(Collectors.toList());
-		approvalHistories = entity.getApprovalHistories().stream()
-	            .map(ApprovalHistoryDTO::new) 
 	            .collect(Collectors.toList());
 	}
 }

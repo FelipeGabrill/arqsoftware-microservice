@@ -47,7 +47,7 @@ public class RequestDTO {
 	@NotNull(message = "Campo de usuário não pode ser vazio")
 	private Long userId;
 	
-	private ApprovalHistoryDTO approvalHistory;
+	private Long approvalHistoryId;
 
 	public RequestDTO(Request entity) {
 		id = entity.getId();
@@ -59,7 +59,6 @@ public class RequestDTO {
 		status = entity.getStatus();
 		physicalSpaceId = entity.getPhysicalSpaceId();
 		userId = entity.getUser().getId();
-		approvalHistory = (entity.getApprovalHistory() == null) ? null : new ApprovalHistoryDTO(entity.getApprovalHistory());
 	}
 	
 	

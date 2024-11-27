@@ -2,14 +2,12 @@ package com.ucsal.arqsoftware.entities;
 
 import java.util.Date;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -54,11 +52,6 @@ public class Request {
 	@JoinColumn(name = "user_id")
 	@Setter
 	private User user;
-	
-	
-	@Setter
-	@OneToOne(mappedBy = "request", cascade = CascadeType.ALL)
-	private ApprovalHistory approvalHistory;
 	
 	public Request() {
 	}

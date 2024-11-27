@@ -1,5 +1,7 @@
 package com.ucsal.arqsoftware.controllers;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,53 +17,53 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.ucsal.arqsoftware.dto.ApprovalHistoryDTO;
-import com.ucsal.arqsoftware.servicies.ApprovalHistoryService;
+import com.ucsal.arqsoftware.proxy.ApprovalHistoryProxy;
+import com.ucsal.arqsoftware.response.ApprovalHistory;
 
 import jakarta.validation.Valid;
-import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/approvalhistories")
 public class ApprovalHistoryController {
 
-    @Autowired
-    private ApprovalHistoryService service;
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER', 'ROLE_MANAGER')")
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<ApprovalHistoryDTO> findById(@PathVariable Long id) {
-        ApprovalHistoryDTO dto = service.findById(id);
-        return ResponseEntity.ok(dto);
-    }
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER', 'ROLE_MANAGER')")
-    @GetMapping
-    public ResponseEntity<Page<ApprovalHistoryDTO>> findAll(Pageable pageable) {
-        Page<ApprovalHistoryDTO> dto = service.findAll(pageable);
-        return ResponseEntity.ok(dto);
-    }
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
-    @PostMapping
-    public ResponseEntity<ApprovalHistoryDTO> insert(@Valid @RequestBody ApprovalHistoryDTO dto) {
-        dto = service.insert(dto);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-            .buildAndExpand(dto.getId()).toUri();
-        return ResponseEntity.created(uri).body(dto);
-    }
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<ApprovalHistoryDTO> update(@PathVariable Long id, @Valid @RequestBody ApprovalHistoryDTO dto) {
-        dto = service.update(id, dto);
-        return ResponseEntity.ok(dto);
-    }
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
-    }
+	@Autowired
+	private ApprovalHistoryProxy proxy;
+	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER', 'ROLE_MANAGER')")
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<ApprovalHistory> findById(@PathVariable Long id) {
+		ApprovalHistory approvalHistory = proxy.getApprovalHistoryById(id);
+		return ResponseEntity.ok(approvalHistory);
+	}
+	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER', 'ROLE_MANAGER')")
+	@GetMapping
+	public ResponseEntity<Page<ApprovalHistory>> findByAll(Pageable pageable) {
+		Page<ApprovalHistory> approvalHistory = proxy.getApprovalHistory(pageable);
+		return ResponseEntity.ok(approvalHistory);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping
+	public ResponseEntity<ApprovalHistory> insert(@Valid @RequestBody ApprovalHistory approvalHistory) {
+		approvalHistory = proxy.postApprovalHistory(approvalHistory);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+			.buildAndExpand(approvalHistory.getId()).toUri();
+		return ResponseEntity.created(uri).body(approvalHistory);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<ApprovalHistory> update(@PathVariable Long id, @Valid @RequestBody ApprovalHistory approvalHistory) {
+		approvalHistory = proxy.putApprovalHistory(id, approvalHistory);
+		return ResponseEntity.ok(approvalHistory);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
+		proxy.deleteApprovalHistory(id);
+		return ResponseEntity.noContent().build();
+	}
+	
 }

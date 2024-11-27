@@ -1,5 +1,6 @@
 package com.ucsal.arqsoftware.servicies;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 
@@ -15,9 +16,11 @@ import com.ucsal.arqsoftware.dto.RequestDTO;
 import com.ucsal.arqsoftware.entities.Request;
 import com.ucsal.arqsoftware.entities.RequestStatus;
 import com.ucsal.arqsoftware.entities.User;
+import com.ucsal.arqsoftware.proxy.ApprovalHistoryProxy;
 import com.ucsal.arqsoftware.proxy.PhysicalSpaceProxy;
 import com.ucsal.arqsoftware.repositories.RequestRepository;
 import com.ucsal.arqsoftware.repositories.UserRepository;
+import com.ucsal.arqsoftware.response.ApprovalHistory;
 import com.ucsal.arqsoftware.response.PhysicalSpace;
 import com.ucsal.arqsoftware.servicies.exceptions.DatabaseException;
 import com.ucsal.arqsoftware.servicies.exceptions.ResourceNotFoundException;
@@ -35,6 +38,9 @@ public class RequestService {
     
     @Autowired
     private PhysicalSpaceProxy physicalSpaceProxy;
+    
+    @Autowired
+    private ApprovalHistoryProxy approvalHistoryProxy;
     
     @Transactional(readOnly = true)
     public RequestDTO findById(Long id) {
@@ -64,10 +70,31 @@ public class RequestService {
         try {
             Request entity = repository.getReferenceById(id);
             copyDtoToEntity(dto, entity);
+            entity.setStatus(dto.getStatus());
             entity = repository.save(entity);
+            createApprovalHistory(id, entity);
             return new RequestDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Requisição não encontrada");
+        }
+    }
+    
+    @Transactional
+    public void createApprovalHistory(Long requestId, Request entity) {
+    	if (entity.getStatus() != RequestStatus.PENDING) {
+        	ApprovalHistory approvalHistory = new ApprovalHistory();
+        	Instant nowPlusFiveMinutes = Instant.now().plus(Duration.ofMinutes(5));
+            approvalHistory.setDateTime(Date.from(nowPlusFiveMinutes));            	
+            if (entity.getStatus() == RequestStatus.APPROVED) {
+            	approvalHistory.setDecision(true);
+            	approvalHistory.setObservation("APPROVED");
+        	} else {
+        		approvalHistory.setDecision(false);
+            	approvalHistory.setObservation("REJECTED");
+        	}
+        	approvalHistory.setRequestId(requestId);
+        	approvalHistory.setUserId(entity.getUser().getId()); 
+        	approvalHistoryProxy.postApprovalHistory(approvalHistory);
         }
     }
 

@@ -18,13 +18,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ucsal.arqsoftware.dto.ApprovalHistoryDTO;
 import com.ucsal.arqsoftware.dto.RequestDTO;
 import com.ucsal.arqsoftware.dto.RoleDTO;
 import com.ucsal.arqsoftware.dto.UserDTO;
 import com.ucsal.arqsoftware.dto.UserInsertDTO;
 import com.ucsal.arqsoftware.dto.UserUpdateDTO;
-import com.ucsal.arqsoftware.entities.ApprovalHistory;
 import com.ucsal.arqsoftware.entities.Request;
 import com.ucsal.arqsoftware.entities.Role;
 import com.ucsal.arqsoftware.entities.User;
@@ -113,15 +111,6 @@ public class UserService implements UserDetailsService {
 				Request req = new Request();
 				req.setId(reqDto.getId());
 				entity.getRequests().add(req);
-			}
-		}
-
-		for (ApprovalHistoryDTO aprDto : dto.getApprovalHistories()) {
-			boolean exists = entity.getApprovalHistories().stream().anyMatch(apr -> apr.getId().equals(aprDto.getId()));
-			if (!exists) {
-				ApprovalHistory apr = new ApprovalHistory();
-				apr.setId(aprDto.getId());
-				entity.getApprovalHistories().add(apr);
 			}
 		}
 	}
